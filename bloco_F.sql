@@ -55,7 +55,7 @@ WITH reputacao_categorias AS (
 	LEFT JOIN olist_order_items_dataset ooid ON opd.product_id = ooid.product_id 
 	LEFT JOIN olist_order_reviews_dataset oord ON ooid.order_id = oord.order_id
 	LEFT JOIN product_category_name_translation pcnt ON opd.product_category_name = pcnt.product_category_name 
-	GROUP BY categoria
+	GROUP BY pcnt.product_category_name_english, opd.product_category_name
 )
 -- Query principal: filtra os resultados
 SELECT 	
