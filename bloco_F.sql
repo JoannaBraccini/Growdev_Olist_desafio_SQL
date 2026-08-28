@@ -52,8 +52,8 @@ WITH reputacao_categorias AS (
 		COUNT(oord.review_id) AS qtd_avaliacoes,
 		ROUND(AVG(oord.review_score),2) AS nota_media 
 	FROM olist_products_dataset opd 
-	JOIN olist_order_items_dataset ooid ON opd.product_id = ooid.product_id 
-	JOIN olist_order_reviews_dataset oord ON ooid.order_id = oord.order_id
+	LEFT JOIN olist_order_items_dataset ooid ON opd.product_id = ooid.product_id 
+	LEFT JOIN olist_order_reviews_dataset oord ON ooid.order_id = oord.order_id
 	LEFT JOIN product_category_name_translation pcnt ON opd.product_category_name = pcnt.product_category_name 
 	GROUP BY categoria
 )
@@ -65,6 +65,8 @@ SELECT
 FROM reputacao_categorias
 WHERE qtd_avaliacoes > 50
 ORDER BY nota_media ASC;
+-- Erro encontrado: quantidade de 'sem categoria' muito alta.
+	-- Solução: usar Left join para não perder as categorias que seriam deletadas no Inner join.
 
 -- 3. Construir uma CTE de frete médio por estado do cliente, usada para comparar cada estado com a média geral de frete.
 --> Avalia o custo logístico regional comparando o frete médio de cada estado com a média nacional.
