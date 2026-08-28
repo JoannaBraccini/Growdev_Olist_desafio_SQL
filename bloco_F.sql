@@ -55,6 +55,7 @@ WITH reputacao_categorias AS (
 	LEFT JOIN olist_order_items_dataset ooid ON opd.product_id = ooid.product_id 
 	LEFT JOIN olist_order_reviews_dataset oord ON ooid.order_id = oord.order_id
 	LEFT JOIN product_category_name_translation pcnt ON opd.product_category_name = pcnt.product_category_name 
+	WHERE ooid.product_id IS NOT NULL
 	GROUP BY pcnt.product_category_name_english, opd.product_category_name
 )
 -- Query principal: filtra os resultados
@@ -66,7 +67,25 @@ FROM reputacao_categorias
 WHERE qtd_avaliacoes > 50
 ORDER BY nota_media ASC;
 -- Erro encontrado: quantidade de 'sem categoria' muito alta.
-	-- Solução: usar Left join para não perder as categorias que seriam deletadas no Inner join.
+	-- Solução: usar Left join para não perder as categorias que seriam deletadas no Inner join, excluir produtos sem uuid.
+	-- Ainda teremos 1439 avaliações sem categoria, mas isso pode ser corrigido pois os produtos relacionados têm uuid e
+	-- podem ser categorizados manualmente.
+-- Teste para entender os null
+SELECT 
+    ood.order_id AS codigo_pedido,
+    ood.order_status AS status_pedido,
+    ooid.product_id AS codigo_produto,
+    opd.product_category_name AS categoria_na_tabela_produtos,
+    pcnt.product_category_name_english AS categoria_traduzida,
+    oord.review_id AS codigo_avaliacao,
+    oord.review_score AS nota
+FROM olist_order_reviews_dataset oord
+LEFT JOIN olist_order_items_dataset ooid ON oord.order_id = ooid.order_id 
+LEFT JOIN olist_products_dataset opd ON ooid.product_id = opd.product_id 
+LEFT JOIN olist_orders_dataset ood ON oord.order_id = ood.order_id
+LEFT JOIN product_category_name_translation pcnt ON pcnt.product_category_name = opd.product_category_name 
+WHERE opd.product_category_name IS NULL OR pcnt.product_category_name_english IS NULL -- Filtrar apenas o que ficou sem categoria
+LIMIT 50;
 
 -- 3. Construir uma CTE de frete médio por estado do cliente, usada para comparar cada estado com a média geral de frete.
 --> Avalia o custo logístico regional comparando o frete médio de cada estado com a média nacional.
