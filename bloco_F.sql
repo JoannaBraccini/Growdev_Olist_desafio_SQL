@@ -30,9 +30,16 @@ SELECT
 FROM faturamento_mensal atual
 -- conectar o mesmo estado, no mesmo ano, onde o mês anterior é igual ao mês atual menos 1
 JOIN faturamento_mensal anterior ON atual.estado = anterior.estado 
-  AND atual.ano = anterior.ano
-  AND anterior.mes = (atual.mes - 1)
+  AND (
+    -- Regra 1: se fevereiro a dezembro do mesmo ano
+    (atual.ano = anterior.ano AND anterior.mes = atual.mes - 1)
+    OR 
+    -- Regra 2: se janeiro (virada de ano)
+    (atual.mes = 1 AND anterior.ano = atual.ano - 1 AND anterior.mes = 12)
+  )
 ORDER BY atual.estado, atual.ano, atual.mes;
+-- Erro encontrado: mes_anterior não tem mês 12 e mes_atual não tem mês 1.
+	-- Solução: se mês atual > 1 -> busca anos iguais e mês anterior -1, senão ano atual -1 e mês 12
 
 -- 2. Construir uma CTE com volume de avaliações e nota média por categoria de produto, 
 	-- usada para identificar as categorias com pior reputação (nota média mais baixa e volume relevante de avaliações).
