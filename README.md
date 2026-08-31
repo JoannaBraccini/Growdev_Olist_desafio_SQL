@@ -1,5 +1,47 @@
 # Desafio de Análise de Dados: E-commerce Brazilian Olist
 
+## 📋 Sobre o Projeto
+Este repositório contém a resolução do desafio técnico de modelagem e extração de inteligência de negócios utilizando o banco de dados de e-commerce da Olist (Kaggle). O objetivo principal foi estruturar consultas SQL (DQL) divididas em blocos de complexidade evolutiva (do básico ao intermediário avançado), gerando uma camada de visualização analítica para suporte à tomada de decisões estratégicas.
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+O projeto foi desenvolvido utilizando as seguintes tecnologias:
+* **SGBD:** PostgreSQL (v18) — Motor de banco de dados relacional utilizado para armazenamento, conversão de dados e execução das queries.
+* **Linguagem Procedural:** PL/pgSQL — Utilizada no desenvolvimento das funções parametrizadas (Stored Functions).
+* **Ferramenta de Conectividade/IDE:** DBeaver Community Edition — Interface utilizada para gerenciamento do banco de dados, execução dos scripts e auditoria dos resultados.
+* **Dataset Base:** Olist Brazilian E-Commerce Dataset (Kaggle).
+
+---
+
+## 🚀 Como Rodar o Projeto Localmente
+
+Siga o passo a passo abaixo para replicar o banco de dados e executar as análises na sua máquina:
+
+### 1. Pré-requisitos
+Certifique-se de ter instalado no seu computador:
+* [PostgreSQL](https://postgresql.org)
+* [DBeaver Community](https://dbeaver.io)
+
+### 2. Download dos Dados
+1. Baixe os arquivos CSV originais diretamente no ([https://kaggle.com](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)).
+2. Extraia os arquivos em uma pasta de sua preferência.
+
+### 3. Configuração do Banco de Dados
+1. Abra o **DBeaver** e conecte-se ao seu servidor local do PostgreSQL.
+2. Crie um novo banco de dados:
+   ```sql
+   CREATE DATABASE nome_do_banco;
+   ```
+3. Com o banco selecionado, crie as tabelas base e realize a importação dos arquivos CSV extraídos (utilizando a ferramenta de importação nativa do DBeaver). *Dica: Garanta a conversão dos campos de chaves primárias e estrangeiras (`order_id`, `customer_id`, `seller_id`) para o tipo `UUID` conforme boas práticas de modelagem.*
+
+### 4. Execução dos Scripts
+Os scripts estão organizados por blocos de evolução lógica na pasta raiz. Para testá-los:
+1. Abra a pasta do projeto no DBeaver.
+2. Execute os arquivos na ordem sequencial desejada (`bloco_A.sql`, `bloco_B.sql`, etc.).
+
+---
+
 ## Entregáveis
 Conforme o edital, o projeto está estruturado com scripts comentados:
 
